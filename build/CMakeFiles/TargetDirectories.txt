@@ -1,0 +1,2 @@
+/home/amar/PCL-ws/build/CMakeFiles/pcd_write_test.dir
+/home/amar/PCL-ws/build/CMakeFiles/stereo_skin.dir
