@@ -31,8 +31,8 @@ void stereo_calibrate()
 {
 
  //Create objects to access left and right camera images.
-VideoCapture cap_1(1);
-VideoCapture cap_2(2);
+VideoCapture cap_1(0);
+VideoCapture cap_2(1);
 
 //cap_1.set(CV_CAP_PROP_FRAME_WIDTH, 320);
 //cap_1.set(CV_CAP_PROP_FRAME_HEIGHT, 240);

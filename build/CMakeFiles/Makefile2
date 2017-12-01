@@ -46,6 +46,9 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
 CMAKE_SOURCE_DIR = /home/amar/PCL-ws
 
@@ -120,6 +123,41 @@ CMakeFiles/stereo_skin.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/stereo_skin.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/stereo_test.dir
+
+# All Build rule for target.
+CMakeFiles/stereo_test.dir/all:
+	$(MAKE) -f CMakeFiles/stereo_test.dir/build.make CMakeFiles/stereo_test.dir/depend
+	$(MAKE) -f CMakeFiles/stereo_test.dir/build.make CMakeFiles/stereo_test.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/amar/PCL-ws/build/CMakeFiles  3
+	@echo "Built target stereo_test"
+.PHONY : CMakeFiles/stereo_test.dir/all
+
+# Include target in all.
+all: CMakeFiles/stereo_test.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/stereo_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/amar/PCL-ws/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/stereo_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/amar/PCL-ws/build/CMakeFiles 0
+.PHONY : CMakeFiles/stereo_test.dir/rule
+
+# Convenience name for target.
+stereo_test: CMakeFiles/stereo_test.dir/rule
+.PHONY : stereo_test
+
+# clean rule for target.
+CMakeFiles/stereo_test.dir/clean:
+	$(MAKE) -f CMakeFiles/stereo_test.dir/build.make CMakeFiles/stereo_test.dir/clean
+.PHONY : CMakeFiles/stereo_test.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/stereo_test.dir/clean
 .PHONY : clean
 
 #=============================================================================

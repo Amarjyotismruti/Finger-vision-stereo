@@ -10,6 +10,11 @@
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/console/parse.h>
 #include <pcl/filters/statistical_outlier_removal.h>
+#include <pcl/filters/filter.h>
+#include <pcl/filters/median_filter.h>
+#include <pcl/filters/voxel_grid.h>
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/radius_outlier_removal.h>
 
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/highgui.hpp"
@@ -21,6 +26,7 @@
 #include "stereo_image_fs.h"
 #include "skin_viz.h"
 #include "unistd.h"
+#include <fstream>
 
 using namespace std;
 using namespace cv;
@@ -87,11 +93,21 @@ boost::shared_ptr<pcl::visualization::PCLVisualizer> stereo_vis (pcl::PointCloud
 
 int main(int argc, char** argv)
 {
-
-
+    //Manage commandline arguments.
+    bool store = false;
+    if (argc>1)
+    {
+        std::string arg = argv[1];
+    
+        if (arg=="--save_z")
+            store=true;
+    }
+       
     //Declare the point cloud variable
     boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer (new pcl::visualization::PCLVisualizer ("Stereo Viewer"));
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud(new   pcl::PointCloud<pcl::PointXYZ>());
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud(new   pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud_filtered(new   pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pointcloud_filtered2(new   pcl::PointCloud<pcl::PointXYZ>);
     pointcloud->header.frame_id = "tf_frame";
     pointcloud->width = 1;
     pointcloud->height = 1;
@@ -103,7 +119,23 @@ int main(int argc, char** argv)
     // CascadeClassifier hand_cascade;
     // hand_cascade.load(hand_cascade_name);
     int iter = 0;
-
+    std::vector<int> index;
+    // Create the filtering objects.
+    pcl::VoxelGrid<pcl::PointXYZ> vxg;
+    vxg.setLeafSize (0.01f, 0.01f, 0.01f);
+    pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+    pcl::RadiusOutlierRemoval<pcl::PointXYZ> outrem;
+    outrem.setRadiusSearch(0.01);
+    outrem.setMinNeighborsInRadius (5);
+    sor.setMeanK (200);
+    sor.setStddevMulThresh (0.07);
+    pcl::PassThrough<pcl::PointXYZ> vox;
+    vox.setFilterFieldName ("z");
+    vox.setFilterLimits (0.1, 0.35);    //camera-1-props 0.07-0.2/15
+    // vox.setFilterLimits (0.1,0.3);   //camera-2-props
+    // pcl::MedianFilter<pcl::PointXYZ> med_f;
+    // med_f.setWindowSize(10);
+    // med_f.setMaxAllowedMovement(15.0);
 
 
     Mat src_l, src_r ,src_gray;
@@ -112,11 +144,7 @@ int main(int argc, char** argv)
     std::vector<cv::Rect> hand_rect;
     // Read the images
     VideoCapture cap2(1);
-    VideoCapture cap1(2);
-
-    //Create mask for the skin portion of the image.
-    cv::Mat mask = cv::Mat::zeros(480, 640, CV_8U); // all 0
-    mask(Rect(250,150,200,220)) = 255;
+    VideoCapture cap1(0);
     
     //Test the cameras.
     cap1.read(src_l);
@@ -129,9 +157,12 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    // infinite loop to display
-    // and refresh the content of the output image
-    // until the user presses q or Q
+    //Initialize file to save z values.
+    
+    ofstream fout("depth_values.txt");
+    
+    // infinite loop to display.
+    // and refresh the content of the pointcloud.
     char key = 0;
 
     while(!viewer->wasStopped())
@@ -149,8 +180,6 @@ int main(int argc, char** argv)
       src_r.convertTo(src_r, -1, 2, 30);
       src_l.convertTo(src_l, -1, 2, 30);
 
-      // Convert image to gray
-      // cvtColor( src, src_gray, COLOR_BGR2GRAY );
 
       // Reduce the noise so we avoid false circle detection
       // GaussianBlur( src_gray, src_gray, Size(9, 9), 2, 2 );
@@ -163,12 +192,16 @@ int main(int argc, char** argv)
         //Detet hand in the image and return centre.
         // detect_hand(img_rect, hand_cascade, hand_rect);
         pointcloud->clear();
+        // pointcloud_filtered->clear();
         //Store the depth points in point cloud.
-        pointcloud->width = static_cast<uint32_t>(img_disp.cols);
-        pointcloud->height = static_cast<uint32_t>(img_disp.rows);
-        pointcloud->is_dense = false;
+        //Strccture the point cloud data structure.
+        //pointcloud->resize(img_disp.rows*img_disp.cols);
+        pointcloud->width = (img_rect.cols);
+        pointcloud->height =(img_rect.rows);
+        pointcloud->is_dense = true;
         pcl::PointXYZ point;
 
+        //Construct the point cloud from the XYZ image from OpenCV Mat data.
         for (int i(0); i < img_disp.rows; i++)
         {
             for (int j(0); j < img_disp.cols; j++)
@@ -178,19 +211,36 @@ int main(int argc, char** argv)
                 Point3f p = nd_points.at<Point3f>(i, j);
                 point.x = p.x*25;
                 point.y = p.y*25;
-                point.z = p.z*7;
+                point.z = p.z*25;  //Change to -15 for camera 2.
 
+                if (store)
+                {
+
+                    fout<<point.z<<endl;
+                }
+                //std::cout<<"Z value:"<<point.z<<std::endl;
                 pointcloud->points.push_back(point);
 
 
             }
         }
+
+        vxg.setInputCloud(pointcloud);
+        vxg.filter(*pointcloud_filtered);
+        //remove noise from the point cloud.
+        vox.setInputCloud(pointcloud_filtered);
+        // std::cout<<"I am in!"<<std::endl;
+        vox.filter(*pointcloud);
+        sor.setInputCloud(pointcloud);
+        sor.filter(*pointcloud_filtered);
+        // pcl::removeNaNFromPointCloud(*pointcloud, *pointcloud_filtered, index);
         // std::cout<<"Updated Viewer"<<std::endl;
-        viewer->updatePointCloud(pointcloud, "sample cloud");
+        viewer->updatePointCloud(pointcloud_filtered, "sample cloud");
         key = (char)waitKey(15);
         viewer->spinOnce();
 
     }
+
     return 0;
 
 }

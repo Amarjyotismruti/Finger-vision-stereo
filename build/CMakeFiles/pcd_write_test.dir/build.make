@@ -34,6 +34,9 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
 CMAKE_SOURCE_DIR = /home/amar/PCL-ws
 
@@ -87,25 +90,12 @@ pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_thread.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_iostreams.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_serialization.so
-pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libpthread.so
 pcd_write_test: /usr/lib/libpcl_common.so
 pcd_write_test: /usr/lib/libOpenNI.so
-pcd_write_test: /usr/lib/libOpenNI2.so
 pcd_write_test: /usr/lib/libvtkCommon.so.5.8.0
-pcd_write_test: /usr/lib/libvtkFiltering.so.5.8.0
-pcd_write_test: /usr/lib/libvtkImaging.so.5.8.0
-pcd_write_test: /usr/lib/libvtkGraphics.so.5.8.0
-pcd_write_test: /usr/lib/libvtkGenericFiltering.so.5.8.0
-pcd_write_test: /usr/lib/libvtkIO.so.5.8.0
 pcd_write_test: /usr/lib/libvtkRendering.so.5.8.0
-pcd_write_test: /usr/lib/libvtkVolumeRendering.so.5.8.0
 pcd_write_test: /usr/lib/libvtkHybrid.so.5.8.0
-pcd_write_test: /usr/lib/libvtkWidgets.so.5.8.0
-pcd_write_test: /usr/lib/libvtkParallel.so.5.8.0
-pcd_write_test: /usr/lib/libvtkInfovis.so.5.8.0
-pcd_write_test: /usr/lib/libvtkGeovis.so.5.8.0
-pcd_write_test: /usr/lib/libvtkViews.so.5.8.0
 pcd_write_test: /usr/lib/libvtkCharts.so.5.8.0
 pcd_write_test: /usr/lib/libpcl_io.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_system.so
@@ -114,7 +104,6 @@ pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_thread.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_iostreams.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_serialization.so
-pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libpthread.so
 pcd_write_test: /usr/lib/libpcl_common.so
 pcd_write_test: /usr/lib/libpcl_octree.so
@@ -124,22 +113,20 @@ pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_thread.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_iostreams.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_serialization.so
-pcd_write_test: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
 pcd_write_test: /usr/lib/x86_64-linux-gnu/libpthread.so
 pcd_write_test: /usr/lib/libpcl_common.so
 pcd_write_test: /usr/lib/libOpenNI.so
-pcd_write_test: /usr/lib/libOpenNI2.so
 pcd_write_test: /usr/lib/libpcl_io.so
 pcd_write_test: /usr/lib/libpcl_octree.so
 pcd_write_test: /usr/lib/libvtkViews.so.5.8.0
 pcd_write_test: /usr/lib/libvtkInfovis.so.5.8.0
 pcd_write_test: /usr/lib/libvtkWidgets.so.5.8.0
-pcd_write_test: /usr/lib/libvtkVolumeRendering.so.5.8.0
 pcd_write_test: /usr/lib/libvtkHybrid.so.5.8.0
 pcd_write_test: /usr/lib/libvtkParallel.so.5.8.0
+pcd_write_test: /usr/lib/libvtkVolumeRendering.so.5.8.0
 pcd_write_test: /usr/lib/libvtkRendering.so.5.8.0
-pcd_write_test: /usr/lib/libvtkImaging.so.5.8.0
 pcd_write_test: /usr/lib/libvtkGraphics.so.5.8.0
+pcd_write_test: /usr/lib/libvtkImaging.so.5.8.0
 pcd_write_test: /usr/lib/libvtkIO.so.5.8.0
 pcd_write_test: /usr/lib/libvtkFiltering.so.5.8.0
 pcd_write_test: /usr/lib/libvtkCommon.so.5.8.0

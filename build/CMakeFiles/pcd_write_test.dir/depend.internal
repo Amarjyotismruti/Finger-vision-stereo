@@ -212,12 +212,7 @@ CMakeFiles/pcd_write_test.dir/src/test.cpp.o
  /usr/include/pcl-1.7/pcl/PCLPointCloud2.h
  /usr/include/pcl-1.7/pcl/PCLPointField.h
  /usr/include/pcl-1.7/pcl/PointIndices.h
- /usr/include/pcl-1.7/pcl/PolygonMesh.h
- /usr/include/pcl-1.7/pcl/TextureMesh.h
- /usr/include/pcl-1.7/pcl/Vertices.h
  /usr/include/pcl-1.7/pcl/common/concatenate.h
- /usr/include/pcl-1.7/pcl/common/copy_point.h
- /usr/include/pcl-1.7/pcl/common/impl/copy_point.hpp
  /usr/include/pcl-1.7/pcl/common/impl/io.hpp
  /usr/include/pcl-1.7/pcl/common/io.h
  /usr/include/pcl-1.7/pcl/common/point_tests.h

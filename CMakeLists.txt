@@ -29,3 +29,7 @@ target_link_libraries(pcd_write_test ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES}
 
 add_executable(stereo_skin src/multitracker.cpp)
 target_link_libraries(stereo_skin ${OpenCV_LIBS} ${PCL_LIBRARIES})
+
+add_executable(stereo_test src/stastical_test.cpp)
+target_link_libraries(stereo_test ${PCL_LIBRARIES})
+

@@ -36,6 +36,7 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-2.8/Modules/Compiler/GNU-CXX.cmake"
   "/usr/share/cmake-2.8/Modules/Compiler/GNU.cmake"
   "/usr/share/cmake-2.8/Modules/FindBoost.cmake"
+  "/usr/share/cmake-2.8/Modules/FindCUDA.cmake"
   "/usr/share/cmake-2.8/Modules/FindPackageHandleStandardArgs.cmake"
   "/usr/share/cmake-2.8/Modules/FindPackageMessage.cmake"
   "/usr/share/cmake-2.8/Modules/FindPkgConfig.cmake"
@@ -65,4 +66,5 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 SET(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/pcd_write_test.dir/DependInfo.cmake"
   "CMakeFiles/stereo_skin.dir/DependInfo.cmake"
+  "CMakeFiles/stereo_test.dir/DependInfo.cmake"
   )

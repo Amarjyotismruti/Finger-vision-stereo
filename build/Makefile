@@ -38,6 +38,9 @@ RM = /usr/bin/cmake -E remove -f
 # Escaping for special characters.
 EQUALS = =
 
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/bin/ccmake
+
 # The top-level source directory on which CMake was run.
 CMAKE_SOURCE_DIR = /home/amar/PCL-ws
 
@@ -49,8 +52,8 @@ CMAKE_BINARY_DIR = /home/amar/PCL-ws/build
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running interactive CMake command-line interface..."
-	/usr/bin/cmake -i .
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -124,6 +127,19 @@ stereo_skin/fast:
 	$(MAKE) -f CMakeFiles/stereo_skin.dir/build.make CMakeFiles/stereo_skin.dir/build
 .PHONY : stereo_skin/fast
 
+#=============================================================================
+# Target rules for targets named stereo_test
+
+# Build rule for target.
+stereo_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 stereo_test
+.PHONY : stereo_test
+
+# fast build rule for target.
+stereo_test/fast:
+	$(MAKE) -f CMakeFiles/stereo_test.dir/build.make CMakeFiles/stereo_test.dir/build
+.PHONY : stereo_test/fast
+
 src/multitracker.o: src/multitracker.cpp.o
 .PHONY : src/multitracker.o
 
@@ -147,6 +163,30 @@ src/multitracker.s: src/multitracker.cpp.s
 src/multitracker.cpp.s:
 	$(MAKE) -f CMakeFiles/stereo_skin.dir/build.make CMakeFiles/stereo_skin.dir/src/multitracker.cpp.s
 .PHONY : src/multitracker.cpp.s
+
+src/stastical_test.o: src/stastical_test.cpp.o
+.PHONY : src/stastical_test.o
+
+# target to build an object file
+src/stastical_test.cpp.o:
+	$(MAKE) -f CMakeFiles/stereo_test.dir/build.make CMakeFiles/stereo_test.dir/src/stastical_test.cpp.o
+.PHONY : src/stastical_test.cpp.o
+
+src/stastical_test.i: src/stastical_test.cpp.i
+.PHONY : src/stastical_test.i
+
+# target to preprocess a source file
+src/stastical_test.cpp.i:
+	$(MAKE) -f CMakeFiles/stereo_test.dir/build.make CMakeFiles/stereo_test.dir/src/stastical_test.cpp.i
+.PHONY : src/stastical_test.cpp.i
+
+src/stastical_test.s: src/stastical_test.cpp.s
+.PHONY : src/stastical_test.s
+
+# target to generate assembly for a file
+src/stastical_test.cpp.s:
+	$(MAKE) -f CMakeFiles/stereo_test.dir/build.make CMakeFiles/stereo_test.dir/src/stastical_test.cpp.s
+.PHONY : src/stastical_test.cpp.s
 
 src/test.o: src/test.cpp.o
 .PHONY : src/test.o
@@ -182,9 +222,13 @@ help:
 	@echo "... pcd_write_test"
 	@echo "... rebuild_cache"
 	@echo "... stereo_skin"
+	@echo "... stereo_test"
 	@echo "... src/multitracker.o"
 	@echo "... src/multitracker.i"
 	@echo "... src/multitracker.s"
+	@echo "... src/stastical_test.o"
+	@echo "... src/stastical_test.i"
+	@echo "... src/stastical_test.s"
 	@echo "... src/test.o"
 	@echo "... src/test.i"
 	@echo "... src/test.s"
